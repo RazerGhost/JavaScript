@@ -1,0 +1,67 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+
+    <form action="" id="formId">
+        <label for="factuurdatum_input">Factuurdatum is:</label>
+        <input type="date" id="factuurdatum_input" name="factuurdatum_input" required>
+        <input type="submit">
+    </form>
+
+    
+    <p id="vandaag"></p>
+    <p id="factuurdatum"></p>
+    <input type="date" name="termijn" id="termijn">
+    <p id="dagen"></p>
+
+
+
+    <script>
+
+        var form = document.getElementById("formId");
+        var factuurdatum_input = document.getElementById("factuurdatum_input");
+        form.addEventListener('submit', submitForm);
+        function submitForm(event) {
+            event.preventDefault();
+
+            var nu = Date.now();
+            var eenDag = 86400000;
+            var vandaag = new Date(nu);
+            document.getElementById("vandaag").innerHTML = "Vandaag is: " + vandaag;
+
+            var factuurdatum = new Date(factuurdatum_input.value);
+            document.getElementById("factuurdatum").innerHTML = "Factuurdatum is: " + factuurdatum;
+
+            var termijn = new Date(factuurdatum.getTime() + eenDag * 30);
+            var day = termijn.getDate()
+            var month = termijn.getMonth()
+            var year = termijn.getFullYear()
+            var fulldate = "'" + day + "-" + month + "-" + year + "'";
+            alert(fulldate);
+            document.getElementById("termijn").value = fulldate;
+
+
+
+            var verschil = Math.abs(vandaag - termijn);
+            var dagen = verschil / eenDag;
+
+            if (vandaag > termijn) {
+                alert("Meld incassobureau");
+                document.getElementById("dagen").style.color = "red";
+                document.getElementById("dagen").innerHTML = "Meld incassobureau";
+            } else {
+                document.getElementById("dagen").innerHTML = "Dagen over: " + dagen.toFixed(0);
+                document.getElementById("dagen").style.color = "green";
+            }
+            
+        }
+
+    </script>
+</body>
+</html>
