@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For-Lus</title>
+</head>
+
+<body>
+    <div>
+        <h1>V1</h1>
+        <script>
+            var tekst = "Hij lijkt een beetje op Nelson Mandela";
+            lengte = tekst.length;
+            spaties = 0
+            document.write("<br>");
+            for (x = 0; x < lengte; x++) {
+                teken = tekst.charAt(x);
+                document.write(teken);
+                if (teken == " ") {
+                    spaties++;
+                }
+            }
+            document.write("<br>Tekst bevat " + spaties + " spaties <br>");
+        </script>
+    </div>
+
+    <br>
+
+    <div>
+        <h1>V2</h1>
+        <script>
+            var tekst = "Hij lijkt een beetje op Nelson Mandela";
+            lengte = tekst.length;
+            var letter = {
+                "a": 0,
+                "e": 0,
+                "i": 0,
+                "o": 0,
+                "u": 0
+            }
+            var woorden = 0;
+            document.write("<br>");
+            for (x = 0; x < lengte; x++) {
+                teken = tekst.charAt(x);
+                document.write(teken);
+                if (teken in letter) {
+                    letter[teken]++;
+                }
+                if (teken === " " || x === lengte - 1) {
+                    woorden++;
+                }
+            }
+            document.write("<br>Tekst bevat " + letter["a"] + " a's <br>");
+            document.write("<br>Tekst bevat " + letter["e"] + " e's <br>");
+            document.write("<br>Tekst bevat " + letter["i"] + " i's <br>");
+            document.write("<br>Tekst bevat " + letter["o"] + " o's <br>");
+            document.write("<br>Tekst bevat " + letter["u"] + " u's <br>");
+            document.write("<br>Aantal woorden in de tekst: " + woorden + "<br>");
+        </script>
+    </div>
+
+    <br>
+
+    <div>
+        <h1>V3</h1>
+        <div>
+            <form id="formid">
+                <input type="text" id="input" name="input" value="">
+                <input type="submit" value="Submit">
+            </form>
+            <div id="v3Result"></div>
+        </div>
+        <script>
+            var form = document.getElementById("formid");
+            form.addEventListener("submit", onsubmit)
+            function onsubmit(event) {
+                event.preventDefault();
+                var tekst = document.getElementById("input").value;
+                lengte = tekst.length;
+                var letter = {
+                    "a": 0,
+                    "e": 0,
+                    "i": 0,
+                    "o": 0,
+                    "u": 0
+                }
+                var woorden = 0;
+                var resultContainer = document.getElementById("v3Result");
+                resultContainer.innerHTML = ""; // Clear previous results
+                resultContainer.innerHTML += "<br>";
+                document.write("<br>");
+                for (x = 0; x < lengte; x++) {
+                    teken = tekst.charAt(x);
+                    resultContainer.innerHTML += teken;
+                    if (teken in letter) {
+                        letter[teken]++;
+                    }
+                    if (teken === " " || x === lengte - 1) {
+                        woorden++;
+                    }
+                }
+                document.write("<br>Tekst bevat " + letter["a"] + " a's <br>");
+                document.write("<br>Tekst bevat " + letter["e"] + " e's <br>");
+                document.write("<br>Tekst bevat " + letter["i"] + " i's <br>");
+                document.write("<br>Tekst bevat " + letter["o"] + " o's <br>");
+                document.write("<br>Tekst bevat " + letter["u"] + " u's <br>");
+                document.write("<br>Aantal woorden in de tekst: " + woorden + "<br>");
+            }
+        </script>
+    </div>
+</body>
+
+</html>
