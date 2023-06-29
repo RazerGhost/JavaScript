@@ -5,93 +5,149 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lingo</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .word-grid {
+            display: flex;
+            justify-content: center;
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+
+        .word-grid span {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            height: 40px;
+            width: 40px;
+            font-size: 24px;
+        }
+
+        #woord {
+            width: 250px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        #submit-btn {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        #submit-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 
 <body>
-    <form id="formid">
-        <input type="text" placeholder="" name="woord" id="woord">
-        <input type="submit" value="submit" />
-    </form>
-</body>
+    <div class="container">
+        <div class="word-grid" id="dashes"></div>
+        <form id="formid">
+            <input type="text" placeholder="Enter a letter" name="woord" id="woord">
+            <br>
+            <input type="submit" value="Submit" id="submit-btn">
+        </form>
+    </div>
 
-<script>
-    window.onload = genguess;
-    console.log("1")
-    let form = document.getElementById("formid");
-    form.addEventListener("submit", onsubmit);
+    <script>
+        window.onload = genguess;
+        let form = document.getElementById("formid");
+        form.addEventListener("submit", onsubmit);
 
-    function genguess() {
-        let steden = [
-            "amsterdam",
-            "barcelona",
-            "madrid",
-            "parijs",
-            "berlijn",
-            "londen",
-            "new york",
-            "tokyo",
-        ];
-
-        let randomIndex = Math.floor(Math.random() * steden.length);
-        let randomWord = steden[randomIndex];
-        let letterCount = randomWord.length;
-        console.log(randomWord);
-        console.log(letterCount);
-
-        let dashes = "";
-        for (let i = 0; i < letterCount; i++) {
-            dashes += "-";
-        }
-
-        document.getElementById("woord").placeholder = dashes;
-    }
-
-
-
-    function onsubmit(event) {
-
-        event.preventDefault();
-        let woord = document.getElementById("woord").value.trim();
-        if (woord === "") {
-            alert("Please enter a word.");
-            return;
-        }
-        console.log(woord);
+        let dashesElement = document.getElementById("dashes");
+        let randomWord = "";
+        let letterCount = 0;
         let guesses = 4;
 
-        let updatedDashes = "";
+        function genguess() {
+            let steden = [
+                "amsterdam",
+                "barcelona",
+                "madrid",
+                "parijs",
+                "berlijn",
+                "londen",
+                "new york",
+                "tokyo",
+            ];
 
-        for (let i = 0; i < dashes.length; i++) {
-            if (woord[i] === dashes[i]) {
-                updatedDashes += woord[i];
-            } else {
-                updatedDashes += dashes[i];
+            let randomIndex = Math.floor(Math.random() * steden.length);
+            randomWord = steden[randomIndex];
+            letterCount = randomWord.length;
+            console.log(randomWord);
+            console.log(letterCount);
+
+            for (let i = 0; i < letterCount; i++) {
+                let span = document.createElement("span");
+                span.textContent = "-";
+                dashesElement.appendChild(span);
             }
         }
 
-        document.getElementById("woord").placeholder = updatedDashes;
+        function onsubmit(event) {
+            event.preventDefault();
+            let woord = document.getElementById("woord").value.trim().toLowerCase();
+            if (woord === "") {
+                alert("Please enter a letter.");
+                return;
+            }
+            console.log(woord);
 
-        if (woord === updatedDashes) {
-            alert("Congratulations! You guessed the word correctly!");
-            resetGame();
-        } else {
-            guesses--;
+            let spans = dashesElement.getElementsByTagName("span");
+            let updatedDashes = "";
 
-            if (guesses === 0) {
-                alert("Game over! You ran out of guesses. The word was: " + dashes);
+            for (let i = 0; i < letterCount; i++) {
+                let letter = randomWord[i];
+                if (woord.includes(letter)) {
+                    spans[i].textContent = letter;
+                }
+                updatedDashes += spans[i].textContent;
+            }
+
+            if (woord === randomWord) {
+                alert("Congratulations! You guessed the word correctly!");
                 resetGame();
             } else {
-                alert("Incorrect guess! You have " + guesses + " guesses remaining.");
+                guesses--;
+
+                if (guesses === 0) {
+                    alert("Game over! You ran out of guesses. The word was: " + randomWord);
+                    resetGame();
+                } else {
+                    alert("Incorrect guess! You have " + guesses + " guesses remaining.");
+                }
             }
+
+            document.getElementById("woord").value = "";
         }
-    }
 
-    function resetGame() {
-        document.getElementById("woord").value = "";
-        document.getElementById("woord").placeholder = "";
-        genguess();
-    }
+        function resetGame() {
+            dashesElement.innerHTML = "";
+            guesses = 4;
+            genguess();
+        }
 
-</script>
+    </script>
+
+</body>
 
 </html>
